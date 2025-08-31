@@ -41,7 +41,7 @@
 
                     <div class="flex items-center justify-between">
                         <div class="text-sm leading-6">
-                            <a href="#" class="font-semibold text-primary hover:text-primary-dark">Forgot password?</a>
+                            <a href="/forgot-password.html" class="font-semibold text-primary hover:text-primary-dark">Forgot password?</a>
                         </div>
                     </div>
 
@@ -60,6 +60,10 @@
         const params = new URLSearchParams(window.location.search);
         if (params.get('status') === 'registration_success') {
             successDiv.textContent = 'Registration successful! Please check your email to verify, then log in.';
+            successDiv.classList.remove('hidden');
+        }
+        if (params.get('status') === 'password_reset_success') {
+            successDiv.textContent = 'Password reset successfully! You can now log in with your new password.';
             successDiv.classList.remove('hidden');
         }
 
@@ -81,8 +85,10 @@
                 if (!res.ok) {
                     throw new Error(result.message || 'An unknown error occurred.');
                 }
-                // In a real SPA, you'd store the token in localStorage/sessionStorage.
-                // For this static example, we'll just redirect.
+
+                // CRITICAL FIX: Save the token to localStorage.
+                localStorage.setItem('authToken', result.token);
+
                 window.location.href = '/dashboard.html';
             } catch (error) {
                 errorDiv.textContent = error.message;
