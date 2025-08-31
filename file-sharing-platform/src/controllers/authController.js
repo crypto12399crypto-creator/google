@@ -41,7 +41,6 @@ exports.register = async (req, res) => {
       email_verification_token: crypto.createHash('sha256').update(emailVerificationToken).digest('hex'),
     });
 
-    // In a real app, this URL should point to a frontend page which then calls the API.
     const verificationURL = `${req.protocol}://${req.get('host')}/api/v1/auth/verify-email/${emailVerificationToken}`;
     const message = `Welcome! To finish signing up, please verify your email by clicking here: ${verificationURL}`;
 
@@ -50,7 +49,6 @@ exports.register = async (req, res) => {
       res.status(201).json({ status: 'success', message: req.t('auth.registrationSuccess') });
     } catch (err) {
       console.error('EMAIL SENDING ERROR:', err);
-      // Even if email fails, let the user know registration succeeded but verification is needed.
       res.status(201).json({ status: 'success_email_failed', message: req.t('auth.registrationEmailFailed') });
     }
   } catch (error) {
@@ -70,7 +68,6 @@ exports.login = async (req, res) => {
       return res.status(401).json({ message: req.t('auth.incorrectCredentials') });
     }
 
-    // Re-enabling the email verification check as requested.
     if (!user.email_verified) {
         return res.status(401).json({ message: req.t('auth.verifyEmailPrompt') });
     }
@@ -87,16 +84,19 @@ exports.verifyEmail = async (req, res) => {
         const user = await User.findOne({ where: { email_verification_token: hashedToken } });
 
         if (!user) {
-            return res.status(400).json({ message: req.t('auth.tokenInvalidOrExpired') });
+            // Token is invalid, redirect to login with an error message
+            return res.redirect('/login.html?error=verification_failed');
         }
 
         user.email_verified = true;
         user.email_verification_token = null;
         await user.save({ validate: false });
 
-        res.send('<h1>Email Verified!</h1><p>Your email has been successfully verified. You can now close this tab and log in.</p>');
+        // Redirect to the new, well-designed success page
+        res.redirect('/email-verified.html');
     } catch (error) {
-        res.status(500).send('<h1>Error</h1><p>Could not verify email. The token may be invalid or expired.</p>');
+        console.error("Verification Error:", error);
+        res.redirect('/login.html?error=verification_failed');
     }
 };
 
