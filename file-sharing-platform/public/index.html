@@ -1,35 +1,78 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="h-full scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>File Sharing Platform</title>
-    <link rel="stylesheet" href="/styles/output.css"> <!-- The compiled CSS will be here -->
+    <title>File Sharing Platform - Fast & Secure</title>
+    <link rel="stylesheet" href="/styles/output.css">
     <link rel="preconnect" href="https://rsms.me/">
     <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
 </head>
 <body class="bg-base-100 text-base-content font-sans antialiased">
-    <div class="container mx-auto p-4 md:p-8">
-        <header class="text-center mb-12">
-            <h1 class="text-4xl md:text-5xl font-bold text-primary">Welcome to the File Sharing Platform</h1>
-            <p class="text-lg md:text-xl mt-4 text-neutral/80">High-speed, secure, and professional file sharing.</p>
-        </header>
 
-        <main>
-            <div class="bg-white p-8 rounded-lg shadow-lg text-center max-w-2xl mx-auto">
-                <h2 class="text-3xl font-semibold mb-4 text-base-content">API is Running</h2>
-                <p class="mb-6 text-neutral/70">The backend services are operational. This frontend is a placeholder demonstrating the Tailwind CSS setup.</p>
-                <div class="flex flex-wrap justify-center gap-4">
-                    <button class="bg-primary text-white font-bold py-2 px-4 rounded-lg hover:bg-primary-dark transition-colors shadow-sm">Primary Button</button>
-                    <button class="bg-secondary text-neutral font-bold py-2 px-4 rounded-lg hover:bg-secondary-dark transition-colors shadow-sm">Secondary Button</button>
-                    <button class="bg-accent text-white font-bold py-2 px-4 rounded-lg hover:bg-accent-dark transition-colors shadow-sm">Accent Button</button>
+    <!-- Header -->
+    <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-gray-200">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="text-2xl font-bold text-primary">
+                <a href="/">Share<span class="text-secondary">Fast</span></a>
+            </div>
+            <div class="flex items-center space-x-4">
+                <a href="/plans.html" class="text-gray-600 hover:text-primary transition-colors">Pricing</a>
+                <a href="/login.html" class="text-gray-600 hover:text-primary transition-colors">Login</a>
+                <a href="/register.html" class="bg-primary text-white font-semibold py-2 px-4 rounded-lg hover:bg-primary-dark transition-colors shadow-sm">
+                    Sign Up
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <main class="container mx-auto px-6 pt-16 pb-24 text-center">
+        <h1 class="text-4xl md:text-6xl font-extrabold leading-tight text-neutral">
+            The Fastest Way to Share Files.
+            <br>
+            <span class="text-primary">No Strings Attached.</span>
+        </h1>
+        <p class="mt-6 max-w-2xl mx-auto text-lg md:text-xl text-neutral/70">
+            Upload your files and get a direct download link instantly. No content scanning, no waiting rooms, no nonsense. Just pure speed and privacy.
+        </p>
+        <div class="mt-8 flex justify-center gap-4">
+            <a href="/plans.html" class="bg-primary text-white font-bold py-3 px-8 rounded-lg text-lg hover:bg-primary-dark transition-transform transform hover:scale-105 shadow-lg">
+                Get Started
+            </a>
+        </div>
+    </main>
+
+    <!-- Features Section -->
+    <section class="bg-white py-20">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold text-neutral">Built for Performance and Privacy</h2>
+                <p class="text-lg text-neutral/60 mt-4">We focus on what matters.</p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8 text-center">
+                <div class="p-8 border border-gray-200 rounded-lg shadow-sm">
+                    <h3 class="text-2xl font-semibold text-primary">Blazing Speed</h3>
+                    <p class="mt-2 text-neutral/70">Direct-to-file downloads mean no bottlenecks. Your recipients get your files at maximum speed.</p>
+                </div>
+                <div class="p-8 border border-gray-200 rounded-lg shadow-sm">
+                    <h3 class="text-2xl font-semibold text-primary">Absolute Privacy</h3>
+                    <p class="mt-2 text-neutral/70">We don't scan your content. Your files are your business, not ours. Period.</p>
+                </div>
+                <div class="p-8 border border-gray-200 rounded-lg shadow-sm">
+                    <h3 class="text-2xl font-semibold text-primary">Simple & Professional</h3>
+                    <p class="mt-2 text-neutral/70">A clean, modern interface that's easy to use for you and your recipients.</p>
                 </div>
             </div>
-        </main>
+        </div>
+    </section>
 
-        <footer class="text-center mt-12 text-neutral/70">
-            <p>&copy; 2024 File Sharing Platform. All Rights Reserved.</p>
-        </footer>
-    </div>
+    <!-- Footer -->
+    <footer class="bg-neutral text-white py-12">
+        <div class="container mx-auto px-6 text-center text-sm">
+            <p>&copy; 2025 ShareFast. All Rights Reserved.</p>
+        </div>
+    </footer>
+
 </body>
 </html>

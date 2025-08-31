@@ -15,7 +15,7 @@ module.exports = (req, res, next) => {
     // If it exists, the app is installed. Proceed to the main application routes.
     return next();
   } else {
-    // If it does not exist, the app is not installed. Redirect to the installer.
-    return res.redirect('/install/step1');
+    // If it does not exist, redirect to the new, single-step installer.
+    return res.redirect('/install/step');
   }
 };

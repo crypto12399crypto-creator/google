@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-gray-100">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - File Sharing Platform</title>
+    <link rel="stylesheet" href="/styles/output.css">
+    <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+</head>
+<body class="h-full">
+    <div class="flex h-full">
+        <!-- Sidebar -->
+        <div class="w-64 bg-neutral text-white flex flex-col flex-shrink-0">
+            <div class="p-6 text-2xl font-bold text-primary">
+                <a href="/">Share<span class="text-secondary">Fast</span></a>
+            </div>
+            <nav class="flex-1 px-4 py-2 space-y-2">
+                <a href="/dashboard.html" class="bg-gray-700 text-white flex items-center px-4 py-2 rounded-md">Dashboard</a>
+                <a href="#" class="hover:bg-gray-700 flex items-center px-4 py-2 rounded-md">My Files</a>
+                <a href="#" class="hover:bg-gray-700 flex items-center px-4 py-2 rounded-md">Subscription</a>
+                <a href="#" class="hover:bg-gray-700 flex items-center px-4 py-2 rounded-md">Support Tickets</a>
+            </nav>
+            <div class="p-4 border-t border-gray-700">
+                <a href="/login.html" class="w-full text-left hover:bg-gray-700 flex items-center px-4 py-2 rounded-md">Logout</a>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col overflow-y-auto">
+            <header class="bg-white shadow-sm p-4 flex justify-between items-center border-b">
+                <h1 class="text-2xl font-semibold text-gray-800">Dashboard</h1>
+                <div>
+                    <span class="text-gray-600">Welcome, User!</span>
+                </div>
+            </header>
+            <main class="flex-1 p-6 bg-gray-100">
+
+                <!-- Stats Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                    <div class="bg-white p-6 rounded-lg shadow">
+                        <h3 class="text-lg font-medium text-gray-500">Storage Used</h3>
+                        <p class="text-3xl font-bold text-primary mt-2">15.7 GB / 100 GB</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow">
+                        <h3 class="text-lg font-medium text-gray-500">Files Uploaded</h3>
+                        <p class="text-3xl font-bold text-primary mt-2">128</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow">
+                        <h3 class="text-lg font-medium text-gray-500">Subscription</h3>
+                        <p class="text-3xl font-bold text-primary mt-2">Pro Plan</p>
+                    </div>
+                </div>
+
+                <!-- File Upload & List -->
+                <div class="bg-white p-6 rounded-lg shadow">
+                    <h2 class="text-xl font-semibold mb-4">My Files</h2>
+                    <!-- Upload section could go here -->
+                    <div class="border-t mt-4 pt-4">
+                        <!-- File list table would go here -->
+                        <p class="text-center text-gray-500">File list will be displayed here.</p>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+</body>
+</html>
