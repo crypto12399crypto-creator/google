@@ -1,0 +1,173 @@
+Comprehensive File Sharing Platform Project Plan
+1. Executive Summary
+This document provides a highly detailed and professional blueprint for developing a high-performance, secure, and visually stunning file-sharing platform. The core value proposition is to provide a seamless user experience for uploading and sharing files with no content scanning and direct download links, ensuring maximum speed. The platform's monetization model is based on premium, crypto-exclusive subscriptions with a manual, admin-verified payment process. The entire system will be built with a focus on a one-page setup, professional code organization, and full responsiveness across all devices.
+
+2. Core Features
+The platform will be built on the following foundational pillars:
+
+Automated Installer: A simple, web-based installation script that automates the initial setup. The user will only need to input database credentials, administrative user details, and other essential settings via a user-friendly interface. This will eliminate the need for manual configuration within the code, making deployment effortless.
+
+Single-Page Subscription Plans: All premium plans (1-month, 3-month, and 12-month) will be displayed on a single, clear, and attractive pricing page. This design choice will simplify the user's decision-making process.
+
+Advanced User Authentication: A robust registration and login system featuring secure password hashing, email verification, and a professional "Forgot Password" flow.
+
+User Ticketing System: A dedicated support system where users can submit and track support tickets directly from their dashboard, ensuring efficient communication with the administrative team.
+
+Admin File Management: As the administrator, you will have special, premium privileges. Your account will automatically have unlimited storage and the ability to share files without any cost or subscription requirements.
+
+High-Speed Transfers: The system's architecture will be optimized to handle large file sizes and high traffic, ensuring full-speed uploads and downloads for all users. This will likely involve a CDN (Content Delivery Network) for global access.
+
+Manual Crypto Payment System:
+
+Users will select a plan and be presented with a unique, single-use crypto wallet address and the exact crypto amount to be paid.
+
+The system will display a "Pending Payment" status on the user's dashboard.
+
+An administrator must manually verify the payment on the blockchain and approve the transaction from a dedicated section of the admin panel. Only after this manual approval will the user's plan be activated.
+
+3. Technical Stack
+Backend: PHP (using the Laravel framework for its robust security features, scalability, and clean code architecture).
+
+Database: MySQL, with optimized table structures and indexes for fast query performance.
+
+Frontend:
+
+Structure: Modern, semantic HTML5 for a clean and logical layout.
+
+Styling: A combination of a professional, modern color palette and custom CSS3 for fine-tuning. Tailwind CSS will be used for rapid, responsive UI development.
+
+Interactivity: Vanilla JavaScript and AJAX for dynamic content loading, seamless form submissions, and smooth page transitions.
+
+Server & File Storage: A scalable and reliable cloud solution like AWS S3 or DigitalOcean Spaces will be used for storing all files, ensuring high availability and performance.
+
+4. Database Schema
+The database is designed to support all the planned features, including the manual payment system and ticketing.
+
+users table
+id (INT, Primary Key)
+
+username (VARCHAR)
+
+email (VARCHAR, Unique)
+
+password_hash (VARCHAR)
+
+subscription_plan_id (INT)
+
+subscription_end_date (DATETIME)
+
+total_storage (BIGINT)
+
+used_storage (BIGINT)
+
+is_admin (TINYINT(1))
+
+created_at (DATETIME)
+
+last_login (DATETIME)
+
+plans table
+id (INT, Primary Key)
+
+name (VARCHAR)
+
+price_usd (DECIMAL)
+
+duration_months (INT)
+
+storage_limit (BIGINT)
+
+features (TEXT)
+
+crypto_payment_requests table
+id (INT, Primary Key)
+
+user_id (INT, Foreign Key)
+
+plan_id (INT, Foreign Key)
+
+address (VARCHAR, Unique)
+
+expected_amount_crypto (DECIMAL)
+
+crypto_type (VARCHAR)
+
+status (ENUM('pending', 'waiting_for_admin', 'confirmed', 'failed'))
+
+admin_notes (TEXT)
+
+created_at (DATETIME)
+
+files table
+id (INT, Primary Key)
+
+user_id (INT, Foreign Key)
+
+original_name (VARCHAR)
+
+stored_path (VARCHAR)
+
+link_token (VARCHAR, Unique)
+
+file_size (BIGINT)
+
+download_count (INT)
+
+is_admin_file (TINYINT(1))
+
+created_at (DATETIME)
+
+tickets table
+id (INT, Primary Key)
+
+user_id (INT, Foreign Key)
+
+subject (VARCHAR)
+
+message (TEXT)
+
+status (ENUM('open', 'in_progress', 'closed'))
+
+created_at (DATETIME)
+
+updated_at (DATETIME)
+
+5. User & Admin Flow
+User Flow
+Landing Page: A captivating and dynamic landing page that clearly highlights the platform's speed, security, and unique features.
+
+Single Plan Page: A concise page with all subscription options, allowing the user to select their desired plan and proceed to the crypto payment page.
+
+User Dashboard: A powerful central hub providing real-time statistics on storage usage, file download counts, and active links. Users can also manage their account and submit a support ticket from here.
+
+File Upload: An intuitive drag-and-drop interface with progress bars and notifications.
+
+Admin Flow
+Admin Dashboard: A comprehensive, single-page view of the entire platform's health, including key metrics on users, subscriptions, revenue, and pending payments.
+
+Payment Review: A critical section listing all pending crypto payments. The admin can click on each request to view details and manually approve the payment, which will trigger the user's plan activation.
+
+Ticket Management: A dedicated section to view, respond to, and resolve user support tickets.
+
+Admin File Management: A special section where the admin can upload, manage, and share files without being tied to a subscription plan or storage limits.
+
+6. Premium Features & Design
+Premium Features
+Password-Protected Links: Allow users to set a unique password on individual files.
+
+Link Expiration: Enable users to set a specific expiration time for their links.
+
+Advanced Analytics: A dashboard for users to see detailed stats on their files, including download history and geographical data.
+
+Branded Download Pages: Allow users to customize the download page with their logo and brand colors.
+
+Referral Program: A system to reward users with bonus storage or free service for referring new paying customers.
+
+API Access: Provide a simple API for premium users to programmatically interact with their files.
+
+Professional Design & Optimization
+Color Palette: A professionally defined and attractive color palette will be used consistently throughout the website to reflect a premium brand.
+
+Responsiveness: The website will be built with a "mobile-first" approach, ensuring it looks and works flawlessly on all screen sizes.
+
+Code Quality: The code will be highly organized, well-commented, and optimized for performance, maintainability, and future expansion.
