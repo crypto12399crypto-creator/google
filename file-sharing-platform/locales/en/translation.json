@@ -1,0 +1,48 @@
+{
+  "welcome": "Welcome to the File Sharing Platform API",
+  "errors": {
+    "notFound": "Can't find {{url}} on this server!",
+    "notLoggedIn": "You are not logged in! Please log in to get access.",
+    "invalidToken": "Invalid token. Please log in again.",
+    "userNotFoundForToken": "The user belonging to this token no longer exists.",
+    "noPermission": "You do not have permission to perform this action."
+  },
+  "auth": {
+    "registrationSuccess": "Registration successful! Please check your email to verify your account.",
+    "registrationEmailFailed": "Registration successful, but we could not send a verification email. Please contact support.",
+    "loginSuccess": "Login successful.",
+    "emailVerified": "Email verified successfully!",
+    "provideEmailPassword": "Please provide email and password.",
+    "incorrectCredentials": "Incorrect email or password.",
+    "verifyEmailPrompt": "Please verify your email before logging in.",
+    "userExists": "User with this email or username already exists.",
+    "passwordResetSent": "If a user with that email exists, a password reset link has been sent.",
+    "tokenInvalidOrExpired": "Token is invalid or has expired."
+  },
+  "files": {
+      "uploadSuccess": "File uploaded successfully.",
+      "noFileUploaded": "No file uploaded.",
+      "fetchFailed": "Failed to fetch files.",
+      "deleteFailed": "Failed to delete file.",
+      "downloadFailed": "Failed to download file.",
+      "notFound": "File not found.",
+      "linkExpired": "This link has expired.",
+      "passwordRequired": "Password required or invalid password.",
+      "notEnoughSpace": "Not enough storage space. Please upgrade your plan or free up space."
+  },
+  "tickets": {
+      "createSuccess": "Support ticket created successfully.",
+      "createFailed": "Failed to create support ticket.",
+      "fetchFailed": "Failed to fetch tickets.",
+      "updateSuccess": "Ticket status updated to {{status}}.",
+      "updateFailed": "Failed to update ticket status.",
+      "notFound": "Ticket not found.",
+      "invalidStatus": "Invalid status provided."
+  },
+  "payments": {
+      "requestSuccess": "Payment request created successfully. Please send the exact amount to the provided address.",
+      "requestFailed": "Failed to create payment request.",
+      "pendingRequestExists": "You already have a pending payment request. Please complete or cancel it before creating a new one.",
+      "planNotFound": "Plan not found."
+  }
+}
