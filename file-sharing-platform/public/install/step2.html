@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Installation - Step 2</title>
+    <title>Installation - Create Admin</title>
     <link rel="stylesheet" href="/styles/output.css">
     <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
 </head>
@@ -11,13 +11,14 @@
     <div class="flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8">
         <div class="sm:mx-auto sm:w-full sm:max-w-md">
             <h1 class="text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Platform Installer</h1>
-            <h2 class="mt-2 text-center text-xl font-semibold leading-9 tracking-tight text-primary">Step 2: Create Admin Account</h2>
+            <h2 class="mt-2 text-center text-xl font-semibold leading-9 tracking-tight text-primary">Create Admin Account</h2>
         </div>
 
         <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-2xl">
             <div class="bg-white px-6 py-12 shadow sm:rounded-lg sm:px-12">
                 <p class="mb-6 text-center text-sm text-gray-500">Create the primary administrator account for the platform.</p>
-                <form class="space-y-6" action="/install/step2" method="POST">
+                <!-- The action attribute is corrected here to point to /install/step -->
+                <form class="space-y-6" action="/install/step" method="POST">
                     <div>
                         <label for="username" class="block text-sm font-medium leading-6 text-gray-900">Username</label>
                         <div class="mt-2">
