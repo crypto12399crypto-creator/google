@@ -10,7 +10,6 @@
 </head>
 <body class="bg-base-100 text-base-content font-sans antialiased">
 
-    <!-- Header -->
     <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-gray-200">
         <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
             <div class="text-2xl font-bold text-primary">
@@ -26,12 +25,11 @@
         </nav>
     </header>
 
-    <!-- Hero Section -->
     <main class="container mx-auto px-6 pt-16 pb-24 text-center">
         <h1 class="text-4xl md:text-6xl font-extrabold leading-tight text-neutral">
             The Fastest Way to Share Files.
             <br>
-            <span class="text-primary">No Strings Attached.</span>
+            <span class="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">No Strings Attached.</span>
         </h1>
         <p class="mt-6 max-w-2xl mx-auto text-lg md:text-xl text-neutral/70">
             Upload your files and get a direct download link instantly. No content scanning, no waiting rooms, no nonsense. Just pure speed and privacy.
@@ -43,32 +41,46 @@
         </div>
     </main>
 
-    <!-- Features Section -->
+    <section class="bg-white py-20">
+        <!-- ... Features Section ... -->
+    </section>
+
+    <section class="py-20 bg-base-100">
+        <!-- ... How It Works Section ... -->
+    </section>
+
     <section class="bg-white py-20">
         <div class="container mx-auto px-6">
-            <div class="text-center mb-12">
-                <h2 class="text-4xl font-bold text-neutral">Built for Performance and Privacy</h2>
-                <p class="text-lg text-neutral/60 mt-4">We focus on what matters.</p>
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-neutral">Crypto-Exclusive Payments</h2>
+                <p class="text-lg text-neutral/60 mt-4">We exclusively use cryptocurrency for payments to ensure maximum privacy and security.</p>
             </div>
-            <div class="grid md:grid-cols-3 gap-8 text-center">
-                <div class="p-8 border border-gray-200 rounded-lg shadow-sm">
-                    <h3 class="text-2xl font-semibold text-primary">Blazing Speed</h3>
-                    <p class="mt-2 text-neutral/70">Direct-to-file downloads mean no bottlenecks. Your recipients get your files at maximum speed.</p>
+            <div class="flex justify-center items-center space-x-8 md:space-x-12">
+                <div class="flex flex-col items-center space-y-2">
+                    <img src="https://img.icons8.com/color/96/000000/bitcoin--v1.png" alt="Bitcoin" class="h-16 w-16"/>
+                    <span class="font-semibold">Bitcoin</span>
                 </div>
-                <div class="p-8 border border-gray-200 rounded-lg shadow-sm">
-                    <h3 class="text-2xl font-semibold text-primary">Absolute Privacy</h3>
-                    <p class="mt-2 text-neutral/70">We don't scan your content. Your files are your business, not ours. Period.</p>
+                <div class="flex flex-col items-center space-y-2">
+                    <img src="https://img.icons8.com/color/96/000000/ethereum.png" alt="Ethereum" class="h-16 w-16"/>
+                    <span class="font-semibold">Ethereum</span>
                 </div>
-                <div class="p-8 border border-gray-200 rounded-lg shadow-sm">
-                    <h3 class="text-2xl font-semibold text-primary">Simple & Professional</h3>
-                    <p class="mt-2 text-neutral/70">A clean, modern interface that's easy to use for you and your recipients.</p>
+                <div class="flex flex-col items-center space-y-2">
+                    <img src="https://img.icons8.com/color/96/000000/litecoin.png" alt="Litecoin" class="h-16 w-16"/>
+                    <span class="font-semibold">Litecoin</span>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="bg-neutral text-white py-12">
+    <section class="bg-neutral text-white">
+        <div class="container mx-auto py-20 px-6 text-center">
+            <h2 class="text-4xl font-bold">Ready to Get Started?</h2>
+            <p class="mt-4 text-lg text-gray-300 max-w-xl mx-auto">Create an account and start sharing files in minutes. Choose a plan that's right for you.</p>
+            <a href="/plans.html" class="mt-8 inline-block bg-secondary text-neutral font-bold py-3 px-8 rounded-lg text-lg hover:bg-yellow-400 transition-colors shadow-lg">View Plans</a>
+        </div>
+    </section>
+
+    <footer class="bg-gray-800 text-white py-12">
         <div class="container mx-auto px-6 text-center text-sm">
             <p>&copy; 2025 ShareFast. All Rights Reserved.</p>
         </div>

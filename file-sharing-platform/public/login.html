@@ -22,7 +22,9 @@
 
         <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
             <div class="bg-white px-6 py-12 shadow sm:rounded-lg sm:px-12">
-                <form class="space-y-6" action="#" method="POST">
+                <div id="error-message" class="hidden mb-4 p-4 text-sm text-red-800 bg-red-100 rounded-lg" role="alert"></div>
+                <div id="success-message" class="hidden mb-4 p-4 text-sm text-green-800 bg-green-100 rounded-lg" role="alert"></div>
+                <form class="space-y-6" id="login-form">
                     <div>
                         <label for="email" class="block text-sm font-medium leading-6 text-gray-900">Email address</label>
                         <div class="mt-2">
@@ -44,11 +46,49 @@
                     </div>
 
                     <div>
-                        <button type="submit" class="flex w-full justify-center rounded-md bg-primary px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-primary-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary">Sign in</button>
+                        <button type="submit" class="flex w-full justify-center rounded-md bg-primary px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-primary-dark">Sign in</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
+    <script>
+        const form = document.getElementById('login-form');
+        const errorDiv = document.getElementById('error-message');
+        const successDiv = document.getElementById('success-message');
+
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('status') === 'registration_success') {
+            successDiv.textContent = 'Registration successful! Please check your email to verify, then log in.';
+            successDiv.classList.remove('hidden');
+        }
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            errorDiv.classList.add('hidden');
+            errorDiv.textContent = '';
+
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData.entries());
+
+            try {
+                const res = await fetch('/api/v1/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data),
+                });
+                const result = await res.json();
+                if (!res.ok) {
+                    throw new Error(result.message || 'An unknown error occurred.');
+                }
+                // In a real SPA, you'd store the token in localStorage/sessionStorage.
+                // For this static example, we'll just redirect.
+                window.location.href = '/dashboard.html';
+            } catch (error) {
+                errorDiv.textContent = error.message;
+                errorDiv.classList.remove('hidden');
+            }
+        });
+    </script>
 </body>
 </html>
