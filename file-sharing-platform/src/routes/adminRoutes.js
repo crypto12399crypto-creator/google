@@ -7,6 +7,9 @@ const router = express.Router();
 // Protect all routes in this file and ensure the user is an admin
 router.use(authMiddleware.protect, authMiddleware.isAdmin);
 
+// --- Dashboard Stats ---
+router.get('/stats', adminController.getDashboardStats);
+
 // --- Payment Management ---
 router.get('/payments/pending', adminController.getAllPendingPayments);
 router.patch('/payments/approve/:paymentRequestId', adminController.approvePayment);

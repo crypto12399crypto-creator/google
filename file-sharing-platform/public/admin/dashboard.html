@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-gray-100">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - File Sharing Platform</title>
+    <link rel="stylesheet" href="/styles/output.css">
+    <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+</head>
+<body class="h-full">
+    <div class="flex h-full">
+        <!-- Sidebar -->
+        <div class="w-64 bg-neutral text-white flex flex-col flex-shrink-0">
+            <div class="p-6 text-2xl font-bold text-primary"><a href="/">Share<span class="text-secondary">Fast</span></a></div>
+            <nav class="flex-1 px-4 py-2 space-y-2">
+                <a href="/admin/dashboard.html" class="bg-gray-700 text-white flex items-center px-4 py-2 rounded-md">Dashboard</a>
+                <a href="#" class="hover:bg-gray-700 flex items-center px-4 py-2 rounded-md">Users</a>
+                <a href="#" class="hover:bg-gray-700 flex items-center px-4 py-2 rounded-md">Files</a>
+                <a href="#" class="hover:bg-gray-700 flex items-center px-4 py-2 rounded-md">Tickets</a>
+            </nav>
+            <div class="p-4 border-t border-gray-700"><a href="/login.html" class="w-full text-left hover:bg-gray-700 flex items-center px-4 py-2 rounded-md">Logout</a></div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col overflow-y-auto">
+            <header class="bg-white shadow-sm p-4"><h1 class="text-2xl font-semibold text-gray-800">Admin Dashboard</h1></header>
+            <main class="flex-1 p-6 bg-gray-100">
+                <div id="stats-cards" class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6"></div>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="bg-white p-6 rounded-lg shadow">
+                        <h2 class="text-xl font-semibold mb-4">Pending Payments</h2>
+                        <div id="pending-payments-list" class="text-sm text-gray-600"></div>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow">
+                        <h2 class="text-xl font-semibold mb-4">Recent Open Tickets</h2>
+                        <div id="recent-tickets-list" class="text-sm text-gray-600"></div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    <script>
+        const token = localStorage.getItem('authToken'); // Assuming token is stored in localStorage after login
+
+        function formatBytes(bytes, decimals = 2) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const dm = decimals < 0 ? 0 : decimals;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+        }
+
+        async function fetchData(url) {
+            const res = await fetch(url, { headers: { 'Authorization': `Bearer ${token}` } });
+            if (!res.ok) throw new Error('Failed to fetch data');
+            const { data } = await res.json();
+            return data;
+        }
+
+        async function loadDashboard() {
+            try {
+                // Load stats
+                const { stats } = await fetchData('/api/v1/admin/stats');
+                const statsContainer = document.getElementById('stats-cards');
+                statsContainer.innerHTML = `
+                    <div class="bg-white p-6 rounded-lg shadow"><h3 class="text-lg font-medium text-gray-500">Total Users</h3><p class="text-3xl font-bold text-primary mt-2">${stats.totalUsers}</p></div>
+                    <div class="bg-white p-6 rounded-lg shadow"><h3 class="text-lg font-medium text-gray-500">Total Files</h3><p class="text-3xl font-bold text-primary mt-2">${stats.totalFiles}</p></div>
+                    <div class="bg-white p-6 rounded-lg shadow"><h3 class="text-lg font-medium text-gray-500">Storage Used</h3><p class="text-3xl font-bold text-primary mt-2">${formatBytes(stats.totalStorageUsed)}</p></div>
+                    <div class="bg-white p-6 rounded-lg shadow"><h3 class="text-lg font-medium text-gray-500">Pending Payments</h3><p class="text-3xl font-bold text-accent mt-2">${stats.pendingPayments}</p></div>
+                `;
+
+                // Load pending payments
+                const { pendingPayments } = await fetchData('/api/v1/admin/payments/pending');
+                const paymentsList = document.getElementById('pending-payments-list');
+                if (pendingPayments.length > 0) {
+                    paymentsList.innerHTML = pendingPayments.map(p => `<div class="p-2 border-b">${p.user.username} - ${p.plan.name} ($${p.price_usd})</div>`).join('');
+                } else {
+                    paymentsList.innerHTML = '<p>No pending payments.</p>';
+                }
+
+                // Load recent tickets
+                const { tickets } = await fetchData('/api/v1/admin/tickets?status=open&limit=5');
+                const ticketsList = document.getElementById('recent-tickets-list');
+                if (tickets.length > 0) {
+                    ticketsList.innerHTML = tickets.map(t => `<div class="p-2 border-b"><strong>${t.subject}</strong><br>by ${t.user.username}</div>`).join('');
+                } else {
+                    ticketsList.innerHTML = '<p>No open tickets.</p>';
+                }
+            } catch (error) {
+                console.error('Failed to load admin dashboard:', error);
+                document.getElementById('stats-cards').innerHTML = '<p class="text-red-500">Could not load dashboard data. Are you logged in as an admin?</p>';
+            }
+        }
+
+        // Mock login token for static demonstration
+        if (!token) {
+            console.log("Auth token not found. For static demonstration, please set 'authToken' in localStorage.");
+        }
+        loadDashboard();
+    </script>
+</body>
+</html>

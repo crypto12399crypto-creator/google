@@ -1,59 +1,32 @@
 const { CryptoPaymentRequest, User, Plan, File, Ticket, sequelize } = require('../models');
 const fs = require('fs');
 
-// --- Payment Management ---
-exports.getAllPendingPayments = async (req, res) => { /* ... existing code ... */ };
-exports.approvePayment = async (req, res) => {
-  const t = await sequelize.transaction();
+// --- New Stats Method ---
+exports.getDashboardStats = async (req, res) => {
   try {
-    const { paymentRequestId } = req.params;
-    const paymentRequest = await CryptoPaymentRequest.findByPk(paymentRequestId, { transaction: t });
-    if (!paymentRequest) {
-      await t.rollback();
-      return res.status(404).json({ message: req.t('admin.paymentNotFound', 'Pending payment request not found.') });
-    }
-    // ... rest of the logic
-    await t.commit();
+    const totalUsers = await User.count();
+    const totalFiles = await File.count();
+    const totalStorageUsed = await File.sum('file_size');
+    const pendingPayments = await CryptoPaymentRequest.count({ where: { status: 'pending' } });
+
     res.status(200).json({
       status: 'success',
-      message: req.t('admin.paymentApproved', `Payment approved for user ${user.username}.`),
+      data: {
+        stats: {
+          totalUsers,
+          totalFiles,
+          totalStorageUsed: totalStorageUsed || 0,
+          pendingPayments,
+        },
+      },
     });
   } catch (error) {
-    await t.rollback();
-    res.status(500).json({ status: 'error', message: req.t('admin.paymentApprovalFailed', 'Failed to approve payment.'), error: error.message });
+    res.status(500).json({ status: 'error', message: 'Failed to fetch dashboard stats.', error: error.message });
   }
 };
 
-// --- File Management ---
-exports.getAllFiles = async (req, res) => { /* ... existing code ... */ };
-exports.deleteAnyFile = async (req, res) => { /* ... existing code ... */ };
 
-// --- Ticket Management ---
-exports.getAllTickets = async (req, res) => { /* ... existing code ... */ };
-exports.updateTicketStatus = async (req, res) => {
-    try {
-        const { ticketId } = req.params;
-        const { status } = req.body;
-        if (!status || !['open', 'in_progress', 'closed'].includes(status)) {
-            return res.status(400).json({ message: req.t('tickets.invalidStatus') });
-        }
-        const ticket = await Ticket.findByPk(ticketId);
-        if (!ticket) {
-            return res.status(404).json({ message: req.t('tickets.notFound') });
-        }
-        ticket.status = status;
-        await ticket.save();
-        res.status(200).json({
-            status: 'success',
-            message: req.t('tickets.updateSuccess', { status }),
-            data: { ticket }
-        });
-    } catch (error) {
-        res.status(500).json({ status: 'error', message: req.t('tickets.updateFailed'), error: error.message });
-    }
-};
-
-// --- Keep existing code by re-pasting it ---
+// --- Payment Management ---
 exports.getAllPendingPayments = async (req, res) => {
   try {
     const pendingPayments = await CryptoPaymentRequest.findAll({ where: { status: 'pending' }, include: [{ model: User, as: 'user' }, { model: Plan, as: 'plan' }], order: [['createdAt', 'ASC']] });
@@ -96,6 +69,8 @@ exports.approvePayment = async (req, res) => {
     res.status(500).json({ status: 'error', message: req.t('admin.paymentApprovalFailed', 'Failed to approve payment.'), error: error.message });
   }
 };
+
+// --- File Management ---
 exports.getAllFiles = async (req, res) => {
   try {
     const page = parseInt(req.query.page, 10) || 1;
@@ -128,4 +103,39 @@ exports.deleteAnyFile = async (req, res) => {
     await t.rollback();
     res.status(500).json({ status: 'error', message: req.t('files.deleteFailed'), error: error.message });
   }
+};
+
+// --- Ticket Management ---
+exports.getAllTickets = async (req, res) => {
+  try {
+    const page = parseInt(req.query.page, 10) || 1;
+    const limit = parseInt(req.query.limit, 10) || 50;
+    const offset = (page - 1) * limit;
+    let where = {};
+    if (req.query.status) {
+        where.status = req.query.status;
+    }
+    const { count, rows } = await Ticket.findAndCountAll({ where, limit, offset, include: [{ model: User, as: 'user' }], order: [['updatedAt', 'DESC']] });
+    res.status(200).json({ status: 'success', totalTickets: count, totalPages: Math.ceil(count / limit), currentPage: page, data: { tickets: rows } });
+  } catch (error) {
+    res.status(500).json({ status: 'error', message: 'Failed to fetch tickets.', error: error.message });
+  }
+};
+exports.updateTicketStatus = async (req, res) => {
+    try {
+        const { ticketId } = req.params;
+        const { status } = req.body;
+        if (!status || !['open', 'in_progress', 'closed'].includes(status)) {
+            return res.status(400).json({ message: req.t('tickets.invalidStatus') });
+        }
+        const ticket = await Ticket.findByPk(ticketId);
+        if (!ticket) {
+            return res.status(404).json({ message: req.t('tickets.notFound') });
+        }
+        ticket.status = status;
+        await ticket.save();
+        res.status(200).json({ status: 'success', message: req.t('tickets.updateSuccess', { status }), data: { ticket } });
+    } catch (error) {
+        res.status(500).json({ status: 'error', message: req.t('tickets.updateFailed'), error: error.message });
+    }
 };

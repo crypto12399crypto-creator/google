@@ -16,7 +16,7 @@ const createSendToken = (user, statusCode, req, res) => {
 
   res.status(statusCode).json({
     status: 'success',
-    message: req.t('auth.loginSuccess'),
+    message: req.t('auth.loginSuccess', 'Login successful.'),
     token,
     data: { user },
   });
@@ -35,22 +35,16 @@ exports.register = async (req, res) => {
       return res.status(400).json({ message: req.t('auth.userExists') });
     }
 
-    const emailVerificationToken = crypto.randomBytes(32).toString('hex');
+    // Since email verification is disabled, we don't need to generate or send a token.
+    // We will set the user as verified by default.
     const newUser = await User.create({
       username, email, password,
-      email_verification_token: crypto.createHash('sha256').update(emailVerificationToken).digest('hex'),
+      email_verified: true,
     });
 
-    const verificationURL = `${req.protocol}://${req.get('host')}/api/v1/auth/verify-email/${emailVerificationToken}`;
-    const message = `Welcome! Please verify your email by clicking here: ${verificationURL}`;
+    // The user can now log in immediately.
+    createSendToken(newUser, 201, req, res);
 
-    try {
-      await mailService.sendMail({ to: newUser.email, subject: 'Email Verification', text: message });
-      res.status(201).json({ status: 'success', message: req.t('auth.registrationSuccess') });
-    } catch (err) {
-      console.error('EMAIL SENDING ERROR:', err);
-      res.status(201).json({ status: 'success_email_failed', message: req.t('auth.registrationEmailFailed') });
-    }
   } catch (error) {
     res.status(500).json({ message: 'Server error during registration.', error: error.message });
   }
@@ -68,9 +62,7 @@ exports.login = async (req, res) => {
       return res.status(401).json({ message: req.t('auth.incorrectCredentials') });
     }
 
-    if (!user.email_verified) {
-        return res.status(401).json({ message: req.t('auth.verifyEmailPrompt') });
-    }
+    // Email verification check is now removed.
 
     createSendToken(user, 200, req, res);
   } catch (error) {
@@ -78,73 +70,20 @@ exports.login = async (req, res) => {
   }
 };
 
+// ... (The rest of the file can be simplified as email/password reset is not needed)
+
+// Since email verification is disabled, this function is no longer needed.
 exports.verifyEmail = async (req, res) => {
-    try {
-        const hashedToken = crypto.createHash('sha256').update(req.params.token).digest('hex');
-        const user = await User.findOne({ where: { email_verification_token: hashedToken } });
-
-        if (!user) {
-            return res.status(400).json({ message: req.t('auth.tokenInvalidOrExpired') });
-        }
-
-        user.email_verified = true;
-        user.email_verification_token = null;
-        await user.save({ validate: false });
-
-        res.status(200).json({ status: 'success', message: req.t('auth.emailVerified') });
-    } catch (error) {
-        res.status(500).json({ message: 'Server error during email verification.', error: error.message });
-    }
+    res.status(404).json({ message: 'This feature is disabled.' });
 };
 
+// Since mail server is disabled, this function is no longer needed.
 exports.forgotPassword = async (req, res) => {
-    try {
-        const user = await User.findOne({ where: { email: req.body.email } });
-        if (user) {
-            const resetToken = crypto.randomBytes(32).toString('hex');
-            user.password_reset_token = crypto.createHash('sha256').update(resetToken).digest('hex');
-            user.password_reset_expires = Date.now() + 10 * 60 * 1000;
-            await user.save({ validate: false });
-
-            const resetURL = `${req.protocol}://${req.get('host')}/reset-password?token=${resetToken}`;
-            const message = `Forgot your password? Click here to reset: ${resetURL}`;
-
-            try {
-                await mailService.sendMail({ to: user.email, subject: 'Your Password Reset Token (valid for 10 min)', text: message });
-            } catch (err) {
-                console.error('EMAIL SENDING ERROR:', err);
-                user.password_reset_token = null;
-                user.password_reset_expires = null;
-                await user.save({ validate: false });
-                return res.status(500).json({ message: 'There was an error sending the email.' });
-            }
-        }
-        res.status(200).json({ status: 'success', message: req.t('auth.passwordResetSent') });
-    } catch (error) {
-        res.status(500).json({ message: 'Server error.', error: error.message });
-    }
+    res.status(404).json({ message: 'This feature is disabled.' });
 };
 
 exports.resetPassword = async (req, res) => {
-    try {
-        const hashedToken = crypto.createHash('sha256').update(req.params.token).digest('hex');
-        const user = await User.findOne({
-            where: { password_reset_token: hashedToken, password_reset_expires: { [Op.gt]: Date.now() } }
-        });
-
-        if (!user) {
-            return res.status(400).json({ message: req.t('auth.tokenInvalidOrExpired') });
-        }
-
-        user.password = req.body.password;
-        user.password_reset_token = null;
-        user.password_reset_expires = null;
-        await user.save();
-
-        createSendToken(user, 200, req, res);
-    } catch (error) {
-        res.status(500).json({ message: 'Server error during password reset.', error: error.message });
-    }
+    res.status(404).json({ message: 'This feature is disabled.' });
 };
 
 exports.getMe = (req, res) => {
